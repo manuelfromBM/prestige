@@ -1,0 +1,230 @@
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  transition: background-color var(--transition), border-color var(--transition), backdrop-filter var(--transition);
+  background-color: transparent;
+  border-bottom: 1px solid transparent;
+}
+
+/* Estado con scroll: fondo sólido */
+.scrolled {
+  background-color: rgba(10, 10, 10, 0.92);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--clr-border);
+}
+
+.inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0.85rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+/* ── Logo ── */
+.logo {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.logoImg {
+  height: 40px;
+  width: auto;
+  display: block;
+  object-fit: contain;
+}
+
+.logoText {
+  font-family: var(--font-display);
+  font-size: 1.65rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--clr-white);
+  line-height: 1;
+}
+
+.logoAccent {
+  color: var(--clr-red);
+}
+
+/* ── Nav desktop ── */
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 1.75rem;
+  margin-left: auto;
+}
+
+.link {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--clr-slate);
+  text-decoration: none;
+  position: relative;
+  padding: 0.25rem 0;
+  transition: color var(--transition);
+}
+
+.link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 0;
+  height: 2px;
+  background: var(--clr-red);
+  transition: width var(--transition);
+}
+
+.link:hover {
+  color: var(--clr-white);
+}
+
+.link:hover::after {
+  width: 100%;
+}
+
+/* ── CTA ── */
+.cta {
+  flex-shrink: 0;
+  background-color: var(--clr-red);
+  color: var(--clr-white);
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 0.6rem 1.5rem;
+  border-radius: var(--radius-card);
+  transition: background-color var(--transition), transform var(--transition);
+}
+
+.cta:hover {
+  background-color: var(--clr-red-bright);
+  transform: translateY(-2px);
+}
+
+/* ── Burger ── */
+.burger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 1001;
+}
+
+.burgerLine {
+  width: 24px;
+  height: 2px;
+  background-color: var(--clr-white);
+  border-radius: 2px;
+  transition: transform var(--transition), opacity var(--transition);
+  align-self: center;
+}
+
+.burgerLineTop {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.burgerLineMid {
+  opacity: 0;
+}
+
+.burgerLineBot {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* ── Menú móvil ── */
+.mobileMenu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(10, 10, 10, 0.98);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--transition), visibility var(--transition);
+  z-index: 999;
+}
+
+.mobileMenuOpen {
+  opacity: 1;
+  visibility: visible;
+}
+
+.mobileNav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.mobileLink {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--clr-white);
+  text-decoration: none;
+  transition: color var(--transition);
+}
+
+.mobileLink:hover {
+  color: var(--clr-red);
+}
+
+.mobileCta {
+  margin-top: 1rem;
+  background-color: var(--clr-red);
+  color: var(--clr-white);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 0.9rem 2rem;
+  border-radius: var(--radius-card);
+}
+
+/* ── Responsive ── */
+@media (max-width: 860px) {
+  .nav,
+  .cta {
+    display: none;
+  }
+  .burger {
+    display: flex;
+  }
+}
+
+/* TV */
+@media (min-width: 1920px) {
+  .inner { max-width: 1600px; padding: 1.1rem 3rem; }
+  .logoText { font-size: 2rem; }
+  .link { font-size: 0.95rem; }
+  .cta { font-size: 0.9rem; padding: 0.7rem 1.75rem; }
+}

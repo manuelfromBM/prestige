@@ -1,0 +1,340 @@
+/* =============================================
+   TOKENS — paleta negro / rojo / blanco / plomo
+   ============================================= */
+:root {
+  --clr-bg: #0a0a0a;
+  --clr-surface: #141414;
+  --clr-surface-hover: #1c1c1c;
+  --clr-red: #cc1616;
+  --clr-red-bright: #e52020;
+  --clr-red-muted: #7a0e0e;
+  --clr-white: #f5f5f5;
+  --clr-slate: #9a9a9a;
+  --clr-slate-dark: #5a5a5a;
+  --clr-border: #222222;
+
+  --font-display: "Bebas Neue", "Impact", condensed, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+
+  --radius-card: 4px;
+  --transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* =============================================
+   SECTION WRAPPER
+   ============================================= */
+.section {
+  background-color: var(--clr-bg);
+  padding: 5rem 1.5rem 6rem;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle red glow top-left */
+.section::before {
+  content: "";
+  position: absolute;
+  top: -120px;
+  left: -120px;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(204, 22, 22, 0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* =============================================
+   HEADER
+   ============================================= */
+.header {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto 4rem;
+}
+
+.eyebrow {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--clr-red);
+  margin-bottom: 0.75rem;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  color: var(--clr-white);
+  margin: 0 0 1rem;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.divider {
+  width: 48px;
+  height: 3px;
+  background: var(--clr-red);
+  margin: 0 auto 1.25rem;
+}
+
+.subtitle {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--clr-slate);
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* =============================================
+   GRID
+   ============================================= */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5px; /* tight gap = "blade" aesthetic */
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: var(--clr-border); /* creates the gap color */
+}
+
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =============================================
+   CARD
+   ============================================= */
+.card {
+  background-color: var(--clr-surface);
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  transition: background-color var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.card:hover {
+  background-color: var(--clr-surface-hover);
+}
+
+/* Red left-border reveal on hover */
+.card::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 3px;
+  height: 0;
+  background: var(--clr-red);
+  transition: height var(--transition);
+}
+
+.card:hover::after {
+  height: 100%;
+}
+
+/* =============================================
+   IMAGE
+   ============================================= */
+.imageWrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+}
+
+.image {
+  object-fit: cover;
+  transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  filter: grayscale(30%);
+}
+
+.card:hover .image {
+  transform: scale(1.05);
+  filter: grayscale(0%);
+}
+
+/* Dark overlay at bottom of image */
+.imageOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 40%,
+    rgba(10, 10, 10, 0.85) 100%
+  );
+  pointer-events: none;
+}
+
+/* =============================================
+   BADGE
+   ============================================= */
+.badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background-color: var(--clr-red);
+  color: var(--clr-white);
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 2px;
+  z-index: 2;
+}
+
+/* =============================================
+   CARD CONTENT
+   ============================================= */
+.content {
+  padding: 1.25rem 1.5rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.cardTitle {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--clr-white);
+  margin: 0;
+  line-height: 1;
+}
+
+.cardDescription {
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  color: var(--clr-slate);
+  line-height: 1.6;
+  margin: 0;
+  flex: 1;
+}
+
+/* =============================================
+   CTA BUTTON (inside card)
+   ============================================= */
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  background: transparent;
+  border: 1px solid var(--clr-red-muted);
+  color: var(--clr-red);
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-card);
+  cursor: pointer;
+  transition:
+    background-color var(--transition),
+    color var(--transition),
+    border-color var(--transition);
+  align-self: flex-start;
+}
+
+.cta:hover {
+  background-color: var(--clr-red);
+  border-color: var(--clr-red);
+  color: var(--clr-white);
+}
+
+.ctaArrow {
+  transition: transform var(--transition);
+  display: inline-block;
+}
+
+.cta:hover .ctaArrow {
+  transform: translateX(4px);
+}
+
+/* =============================================
+   BOTTOM CTA
+   ============================================= */
+.bottomCta {
+  text-align: center;
+  margin-top: 3.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.bottomCtaText {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--clr-slate);
+  margin: 0;
+}
+
+.whatsappBtn {
+  display: inline-block;
+  background-color: var(--clr-red);
+  color: var(--clr-white);
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 0.75rem 2rem;
+  border-radius: var(--radius-card);
+  transition: background-color var(--transition), transform var(--transition);
+}
+
+.whatsappBtn:hover {
+  background-color: var(--clr-red-bright);
+  transform: translateY(-2px);
+}
+
+/* =============================================
+   TV / LARGE SCREEN (≥1920px)
+   ============================================= */
+@media (min-width: 1920px) {
+  .section {
+    padding: 7rem 3rem 8rem;
+  }
+
+  .title {
+    font-size: 5rem;
+  }
+
+  .grid {
+    max-width: 1600px;
+    gap: 2px;
+  }
+
+  .cardTitle {
+    font-size: 2rem;
+  }
+
+  .cardDescription {
+    font-size: 1rem;
+  }
+
+  .cta {
+    font-size: 0.9rem;
+    padding: 0.65rem 1.25rem;
+  }
+}

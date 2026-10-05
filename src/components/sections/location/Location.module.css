@@ -1,0 +1,347 @@
+/* =============================================
+   TOKENS (heredados del sistema global)
+   ============================================= */
+:root {
+  --clr-bg: #0a0a0a;
+  --clr-surface: #141414;
+  --clr-surface-hover: #1c1c1c;
+  --clr-red: #cc1616;
+  --clr-red-bright: #e52020;
+  --clr-white: #f5f5f5;
+  --clr-slate: #9a9a9a;
+  --clr-border: #222222;
+  --font-display: var(--font-barlow), "Impact", condensed, sans-serif;
+  --font-body: var(--font-inter), system-ui, sans-serif;
+  --transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* =============================================
+   SECTION
+   ============================================= */
+.section {
+  background-color: var(--clr-bg);
+  padding: 5rem 1.5rem 6rem;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Glow rojo opuesto al de Services (esquina inferior derecha) */
+.section::after {
+  content: "";
+  position: absolute;
+  bottom: -100px;
+  right: -100px;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(204, 22, 22, 0.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* =============================================
+   HEADER
+   ============================================= */
+.header {
+  text-align: center;
+  margin-bottom: 3.5rem;
+}
+
+.eyebrow {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--clr-red);
+  margin-bottom: 0.75rem;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--clr-white);
+  margin: 0 0 1rem;
+  line-height: 1;
+}
+
+.divider {
+  width: 48px;
+  height: 3px;
+  background: var(--clr-red);
+  margin: 0 auto;
+}
+
+/* =============================================
+   LAYOUT: mapa | info
+   ============================================= */
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =============================================
+   COLUMNA IZQUIERDA — MAPA
+   ============================================= */
+.mapCol {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.mapWrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border: 1px solid var(--clr-border);
+  overflow: hidden;
+  /* Borde rojo sutil en la esquina superior izquierda */
+  box-shadow:
+    -3px -3px 0 0 var(--clr-red),
+    inset 0 0 40px rgba(0, 0, 0, 0.5);
+}
+
+.mapIframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  filter: grayscale(80%) invert(92%) contrast(85%); /* tema oscuro */
+  transition: filter var(--transition);
+}
+
+.mapWrapper:hover .mapIframe {
+  filter: grayscale(20%) invert(92%) contrast(90%);
+}
+
+/* Botones de navegación */
+.navBtns {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.navBtn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: var(--clr-red);
+  color: var(--clr-white);
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 0.65rem 1rem;
+  border-radius: 2px;
+  transition: background-color var(--transition), transform var(--transition);
+}
+
+.navBtn:hover {
+  background-color: var(--clr-red-bright);
+  transform: translateY(-2px);
+}
+
+.navBtnSecondary {
+  background-color: transparent;
+  border: 1px solid var(--clr-red);
+  color: var(--clr-red);
+}
+
+.navBtnSecondary:hover {
+  background-color: var(--clr-red);
+  color: var(--clr-white);
+}
+
+/* =============================================
+   COLUMNA DERECHA — INFO
+   ============================================= */
+.infoCol {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* Bloque genérico (dirección, contacto) */
+.infoBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.infoLabel {
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--clr-red);
+}
+
+.infoValue {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--clr-white);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.infoLink {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--clr-white);
+  text-decoration: none;
+  transition: color var(--transition);
+}
+
+.infoLink:hover {
+  color: var(--clr-red);
+}
+
+/* =============================================
+   HORARIO
+   ============================================= */
+.scheduleBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.scheduleList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--clr-border);
+}
+
+.scheduleRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--clr-border);
+  transition: background-color var(--transition);
+}
+
+.scheduleDay {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--clr-slate);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.scheduleHours {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--clr-slate);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Día actual destacado */
+.today .scheduleDay,
+.today .scheduleHours {
+  color: var(--clr-white);
+  font-weight: 600;
+}
+
+.todayDot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--clr-red);
+  flex-shrink: 0;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.5; transform: scale(1.4); }
+}
+
+/* Cerrado */
+.closed .scheduleDay,
+.closed .scheduleHours {
+  color: #3a3a3a;
+}
+
+/* =============================================
+   CTA RESERVA
+   ============================================= */
+.reserveBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  background-color: var(--clr-red);
+  color: var(--clr-white);
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 0.85rem 2rem;
+  border-radius: 2px;
+  transition: background-color var(--transition), transform var(--transition);
+  align-self: flex-start;
+}
+
+.reserveBtn:hover {
+  background-color: var(--clr-red-bright);
+  transform: translateY(-2px);
+}
+
+.reserveArrow {
+  display: inline-block;
+  transition: transform var(--transition);
+}
+
+.reserveBtn:hover .reserveArrow {
+  transform: translateX(4px);
+}
+
+/* =============================================
+   TV / LARGE SCREEN (≥1920px)
+   ============================================= */
+@media (min-width: 1920px) {
+  .section {
+    padding: 7rem 3rem 8rem;
+  }
+
+  .title {
+    font-size: 5rem;
+  }
+
+  .layout {
+    max-width: 1600px;
+    gap: 4rem;
+  }
+
+  .infoValue,
+  .infoLink,
+  .scheduleDay,
+  .scheduleHours {
+    font-size: 1.1rem;
+  }
+
+  .reserveBtn {
+    font-size: 1rem;
+    padding: 1rem 2.5rem;
+  }
+}

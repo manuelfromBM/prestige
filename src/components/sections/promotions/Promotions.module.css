@@ -1,0 +1,200 @@
+.section {
+  background-color: var(--clr-surface);
+  padding: 5rem 1.5rem 6rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.section::before {
+  content: "";
+  position: absolute;
+  top: -120px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 500px;
+  height: 300px;
+  background: radial-gradient(ellipse, rgba(204, 22, 22, 0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.header {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto 4rem;
+}
+
+.eyebrow {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--clr-red);
+  margin-bottom: 0.75rem;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--clr-white);
+  margin: 0 0 1rem;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.divider {
+  width: 48px;
+  height: 3px;
+  background: var(--clr-red);
+  margin: 0 auto 1.25rem;
+}
+
+.subtitle {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--clr-slate);
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* Grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  align-items: stretch;
+}
+
+@media (max-width: 900px) {
+  .grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 480px) {
+  .grid { grid-template-columns: 1fr; }
+}
+
+/* Card */
+.card {
+  background-color: var(--clr-bg);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius-card);
+  padding: 1.75rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  position: relative;
+  transition: border-color var(--transition), transform var(--transition);
+}
+
+.card:hover {
+  border-color: var(--clr-red-muted);
+  transform: translateY(-4px);
+}
+
+.featured {
+  border-color: var(--clr-red);
+  background: linear-gradient(160deg, #180a0a 0%, var(--clr-bg) 60%);
+}
+
+.ribbon {
+  position: absolute;
+  top: 0;
+  right: 1.5rem;
+  transform: translateY(-50%);
+  background-color: var(--clr-red);
+  color: var(--clr-white);
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 2px;
+}
+
+.tag {
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--clr-red);
+}
+
+.cardTitle {
+  font-family: var(--font-display);
+  font-size: 1.55rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--clr-white);
+  margin: 0;
+  line-height: 1.05;
+}
+
+.price {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--clr-red);
+  margin: 0.25rem 0 0;
+  line-height: 1;
+}
+
+.cardDescription {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  color: var(--clr-slate);
+  line-height: 1.55;
+  margin: 0;
+  flex: 1;
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  background: transparent;
+  border: 1px solid var(--clr-red-muted);
+  color: var(--clr-red);
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 0.65rem 1rem;
+  border-radius: var(--radius-card);
+  transition: background-color var(--transition), color var(--transition), border-color var(--transition);
+  align-self: flex-start;
+}
+
+.cta:hover {
+  background-color: var(--clr-red);
+  border-color: var(--clr-red);
+  color: var(--clr-white);
+}
+
+.ctaArrow {
+  display: inline-block;
+  transition: transform var(--transition);
+}
+
+.cta:hover .ctaArrow {
+  transform: translateX(4px);
+}
+
+/* TV */
+@media (min-width: 1920px) {
+  .section { padding: 7rem 3rem 8rem; }
+  .title { font-size: 5rem; }
+  .grid { max-width: 1600px; gap: 1.75rem; }
+  .cardTitle { font-size: 1.9rem; }
+  .cardDescription { font-size: 0.95rem; }
+}

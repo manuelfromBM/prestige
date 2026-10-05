@@ -1,0 +1,176 @@
+.footer {
+  background-color: #060606;
+  border-top: 1px solid var(--clr-border);
+  padding: 4rem 1.5rem 2rem;
+  position: relative;
+}
+
+.footer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 3px;
+  background: var(--clr-red);
+}
+
+.top {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1.2fr;
+  gap: 3rem;
+  padding-bottom: 3rem;
+  border-bottom: 1px solid var(--clr-border);
+}
+
+@media (max-width: 900px) {
+  .top { grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+}
+
+@media (max-width: 520px) {
+  .top { grid-template-columns: 1fr; gap: 2rem; }
+}
+
+/* Marca */
+.brand {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--clr-white);
+  line-height: 1;
+}
+
+.brandAccent {
+  color: var(--clr-red);
+}
+
+.tagline {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--clr-slate);
+  line-height: 1.6;
+  margin: 1rem 0 1.5rem;
+  max-width: 38ch;
+}
+
+.socials {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.social {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius-card);
+  color: var(--clr-slate);
+  transition: color var(--transition), border-color var(--transition), transform var(--transition);
+}
+
+.social:hover {
+  color: var(--clr-red);
+  border-color: var(--clr-red);
+  transform: translateY(-3px);
+}
+
+/* Columnas */
+.colTitle {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--clr-red);
+  margin: 0 0 1.25rem;
+}
+
+.linkList,
+.hoursList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.link {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--clr-slate);
+  text-decoration: none;
+  transition: color var(--transition);
+}
+
+.link:hover {
+  color: var(--clr-white);
+}
+
+.hoursRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  color: var(--clr-slate);
+}
+
+.hoursTime {
+  color: var(--clr-white);
+  font-variant-numeric: tabular-nums;
+}
+
+.contactLine {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--clr-slate);
+  line-height: 1.6;
+  margin: 0 0 0.75rem;
+}
+
+.contactLink {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--clr-white);
+  text-decoration: none;
+  transition: color var(--transition);
+}
+
+.contactLink:hover {
+  color: var(--clr-red);
+}
+
+/* Bottom */
+.bottom {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-top: 1.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.copy,
+.credit {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  color: var(--clr-slate-dark);
+  margin: 0;
+}
+
+/* TV */
+@media (min-width: 1920px) {
+  .top, .bottom { max-width: 1600px; }
+  .brand { font-size: 2.5rem; }
+}

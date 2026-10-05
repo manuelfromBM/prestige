@@ -1,0 +1,114 @@
+.section {
+  background-color: var(--clr-surface);
+  padding: 5rem 1.5rem 6rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  align-items: center;
+}
+
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+}
+
+/* Imagen */
+.imageWrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  border: 1px solid var(--clr-border);
+  overflow: hidden;
+  box-shadow:
+    4px 4px 0 0 var(--clr-red),
+    inset 0 0 60px rgba(0, 0, 0, 0.4);
+}
+
+.image {
+  object-fit: cover;
+  filter: grayscale(35%);
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.imageWrapper:hover .image {
+  transform: scale(1.04);
+}
+
+/* Texto */
+.eyebrow {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--clr-red);
+  margin-bottom: 0.75rem;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: clamp(2.25rem, 4.5vw, 3.5rem);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--clr-white);
+  margin: 0 0 1.25rem;
+  line-height: 1.02;
+}
+
+.text {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--clr-slate);
+  line-height: 1.7;
+  margin: 0 0 1rem;
+  max-width: 52ch;
+}
+
+/* Stats */
+.stats {
+  display: flex;
+  gap: 2.5rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+}
+
+.statValue {
+  font-family: var(--font-display);
+  font-size: 2.75rem;
+  font-weight: 700;
+  color: var(--clr-red);
+  line-height: 1;
+}
+
+.statLabel {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  color: var(--clr-slate);
+  letter-spacing: 0.05em;
+  margin-top: 0.35rem;
+}
+
+/* TV */
+@media (min-width: 1920px) {
+  .section { padding: 7rem 3rem 8rem; }
+  .layout { max-width: 1600px; gap: 5rem; }
+  .title { font-size: 4.5rem; }
+  .text { font-size: 1.2rem; }
+  .statValue { font-size: 3.5rem; }
+}
