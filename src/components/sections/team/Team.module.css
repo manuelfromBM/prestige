@@ -73,7 +73,22 @@
 }
 
 @media (max-width: 480px) {
-  .grid { grid-template-columns: 1fr; }
+  .grid {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .card {
+    flex: 0 0 80%;
+    scroll-snap-align: start;
+  }
 }
 
 /* Card */
@@ -127,7 +142,7 @@
   letter-spacing: 0.1em;
   text-transform: uppercase;
   padding: 4px 10px;
-  border-radius: 2px;
+  border-radius: var(--radius-card);
   z-index: 2;
 }
 

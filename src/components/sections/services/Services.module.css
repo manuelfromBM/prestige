@@ -16,7 +16,7 @@
   --font-display: "Bebas Neue", "Impact", condensed, sans-serif;
   --font-body: "Inter", system-ui, sans-serif;
 
-  --radius-card: 4px;
+  --radius-card: 16px;
   --transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
@@ -108,7 +108,22 @@
 
 @media (max-width: 600px) {
   .grid {
-    grid-template-columns: 1fr;
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 1rem;
+    background-color: transparent;
+  }
+
+  .grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .card {
+    flex: 0 0 80%;
+    scroll-snap-align: start;
   }
 }
 
@@ -123,6 +138,7 @@
   transition: background-color var(--transition);
   position: relative;
   overflow: hidden;
+  border-radius: var(--radius-card);
 }
 
 .card:hover {
@@ -193,7 +209,7 @@
   letter-spacing: 0.12em;
   text-transform: uppercase;
   padding: 4px 10px;
-  border-radius: 2px;
+  border-radius: var(--radius-card);
   z-index: 2;
 }
 

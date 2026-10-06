@@ -143,6 +143,7 @@
   aspect-ratio: 3 / 4;
   border: 1px solid var(--clr-border);
   overflow: hidden;
+  border-radius: var(--radius-card);
   box-shadow:
     -4px -4px 0 0 var(--clr-red),
     inset 0 0 60px rgba(0, 0, 0, 0.4);
@@ -173,7 +174,7 @@
   letter-spacing: 0.1em;
   text-transform: uppercase;
   padding: 0.6rem 1.1rem;
-  border-radius: 2px;
+  border-radius: var(--radius-card);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
 }
 
