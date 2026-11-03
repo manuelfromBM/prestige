@@ -1,6 +1,8 @@
 "use client";
 
+import Image from "next/image";
 import styles from "./Footer.module.css";
+import logo from "@/public/logo-prestige-barber-circle.jpg";
 
 const WHATSAPP = "https://wa.me/56994872535";
 
@@ -25,9 +27,12 @@ export default function Footer() {
       <div className={styles.top}>
         {/* Marca */}
         <div className={styles.brandCol}>
-          <span className={styles.brand}>
-            Barber<span className={styles.brandAccent}>Shop</span>
-          </span>
+          <a href="#inicio" className={styles.brandLink}>
+            <Image src={logo} alt="" className={styles.brandLogo} sizes="64px" />
+            <span className={styles.brand}>
+              Prestige <span className={styles.brandAccent}>Barber</span>
+            </span>
+          </a>
           <p className={styles.tagline}>
             Más que un corte, una experiencia. Barbería premium con asesoría de
             imagen personalizada.
@@ -90,7 +95,7 @@ export default function Footer() {
 
       <div className={styles.bottom}>
         <p className={styles.copy}>
-          © {new Date().getFullYear()} BarberShop. Todos los derechos reservados.
+          © {new Date().getFullYear()} Prestige Barber. Todos los derechos reservados.
         </p>
         <p className={styles.credit}>Hecho con precisión ✂</p>
       </div>

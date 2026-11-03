@@ -106,27 +106,6 @@
   }
 }
 
-@media (max-width: 600px) {
-  .grid {
-    display: flex;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    gap: 1rem;
-    background-color: transparent;
-  }
-
-  .grid::-webkit-scrollbar {
-    display: none;
-  }
-
-  .card {
-    flex: 0 0 80%;
-    scroll-snap-align: start;
-  }
-}
-
 /* =============================================
    CARD
    ============================================= */
@@ -263,6 +242,7 @@
   padding: 0.5rem 1rem;
   border-radius: var(--radius-card);
   cursor: pointer;
+  text-decoration: none;
   transition:
     background-color var(--transition),
     color var(--transition),

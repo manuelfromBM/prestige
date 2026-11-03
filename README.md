@@ -1,36 +1,71 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Prestige Barber
 
-## Getting Started
+Sitio de la barbería con agenda online (`/agendar`) y panel de métricas (`/dashboard`).
+Next.js 16 + Prisma 7 + SQLite.
 
-First, run the development server:
+## Puesta en marcha
 
 ```bash
+npm install            # también genera el cliente de Prisma
+cp .env.example .env   # ajusta las variables si hace falta
+npm run db:migrate     # crea la base SQLite en prisma/dev.db
+npm run db:seed        # carga barberos, servicios y ~200 días de citas simuladas
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+| Script | Qué hace |
+| --- | --- |
+| `npm run db:migrate` | Aplica/crea migraciones (`prisma migrate dev`) |
+| `npm run db:seed` | Borra y vuelve a cargar los datos de ejemplo |
+| `npm run db:reset` | Borra la base, aplica migraciones y corre el seed |
+| `npm run db:studio` | Abre Prisma Studio para ver/editar los datos |
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Rutas
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `/agendar` — reserva en 4 pasos. Solo muestra barberos, días y horas con disponibilidad.
+- `/dashboard` — métricas por barbero (ingresos, citas, ocupación, cancelaciones, clientes,
+  servicios). No está enlazado desde el sitio. Si defines `DASHBOARD_KEY`, se entra con
+  `/dashboard?key=<valor>`; sin la clave responde 404.
 
-## Learn More
+### API
 
-To learn more about Next.js, take a look at the following resources:
+| Método | Ruta | Descripción |
+| --- | --- | --- |
+| GET | `/api/catalog` | Barberos y servicios activos |
+| GET | `/api/availability?serviceId=1` | Horas libres de los próximos 14 días por barbero |
+| POST | `/api/appointments` | Crea una reserva (`barberId: null` = cualquier barbero). 409 si la hora se ocupó |
+| DELETE | `/api/appointments/:id` | Cancela una reserva (queda en el historial) |
+| GET | `/api/metrics?days=30&barberId=2` | Métricas del panel (`key` o header `x-dashboard-key` si hay `DASHBOARD_KEY`) |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Los errores tienen la forma `{ "error": { "code", "message" } }`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Arquitectura
 
-## Deploy on Vercel
+```
+src/server/                  backend aislado (no depende de React)
+  domain/                    tipos, reglas de agenda, fechas y errores (código puro)
+  repositories/types.ts      interfaces de persistencia
+  repositories/prisma.ts     implementación con Prisma
+  services/                  lógica de negocio: reservas, métricas, catálogo, correo
+  container.ts               conecta implementaciones concretas (único punto a cambiar)
+  http.ts                    traduce errores de dominio a respuestas HTTP
+src/app/api/                 rutas HTTP delgadas que llaman a los servicios
+src/lib/api-client.ts        el frontend solo habla con la API por aquí
+prisma/                      esquema, migraciones y seed
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Las fechas de las citas se guardan como `YYYY-MM-DD` + minuto de inicio en horario local de la
+barbería (`SHOP_TIMEZONE`), así no dependen de la zona horaria del servidor.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Migrar a PostgreSQL
+
+1. En `prisma/schema.prisma`, cambia `provider = "sqlite"` por `"postgresql"`.
+2. `npm install @prisma/adapter-pg` y en `src/server/db.ts` usa
+   `new PrismaPg({ connectionString: process.env.DATABASE_URL })`.
+3. Apunta `DATABASE_URL` a tu base, borra `prisma/migrations` y corre `npm run db:migrate`.
+
+### Separar el backend
+
+`src/server` no importa nada de React y las pantallas usan `src/lib/api-client.ts`. Para mover
+la API a otro servicio (Express, Fastify, etc.), copia `src/server` y expón los mismos endpoints;
+luego define `NEXT_PUBLIC_API_URL` con la URL del nuevo backend.

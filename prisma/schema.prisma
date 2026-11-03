@@ -1,0 +1,101 @@
+// Esquema de la agenda de Prestige Barber.
+// Pensado para ser portable: para migrar a PostgreSQL basta con cambiar el
+// provider, el DATABASE_URL y el adapter en src/server/db.ts.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Barber {
+  id              Int            @id @default(autoincrement())
+  name            String
+  role            String
+  imageUrl        String
+  experienceYears Int?
+  instagram       String?
+  active          Boolean        @default(true)
+  sortOrder       Int            @default(0)
+  createdAt       DateTime       @default(now())
+  schedule        WorkingHours[]
+  appointments    Appointment[]
+}
+
+// Horario semanal de cada barbero: una fila por día que trabaja
+model WorkingHours {
+  id          Int    @id @default(autoincrement())
+  barberId    Int
+  weekday     Int // 0 = domingo … 6 = sábado
+  startMinute Int // minutos desde medianoche
+  endMinute   Int
+  breakStart  Int?
+  breakEnd    Int?
+  barber      Barber @relation(fields: [barberId], references: [id], onDelete: Cascade)
+
+  @@unique([barberId, weekday])
+}
+
+model Service {
+  id           Int           @id @default(autoincrement())
+  name         String        @unique
+  description  String        @default("")
+  imageUrl     String        @default("")
+  tag          String? // etiqueta destacada en el inicio ("Más pedido")
+  durationMin  Int
+  price        Int // CLP
+  active       Boolean       @default(true)
+  sortOrder    Int           @default(0)
+  appointments Appointment[]
+}
+
+model Appointment {
+  id          String    @id @default(uuid())
+  barberId    Int
+  serviceId   Int
+  // Fecha y hora en horario local de la barbería (SHOP_TIMEZONE)
+  date        String // YYYY-MM-DD
+  startMinute Int
+  // Copias al momento de reservar: si cambia el catálogo, el historial no cambia
+  durationMin Int
+  price       Int
+  status      String    @default("CONFIRMED") // CONFIRMED | CANCELLED
+  clientName  String
+  clientPhone String
+  clientEmail String
+  source      String    @default("WEB") // WEB | SEED
+  createdAt   DateTime  @default(now())
+  cancelledAt DateTime?
+  barber      Barber    @relation(fields: [barberId], references: [id])
+  service     Service   @relation(fields: [serviceId], references: [id])
+
+  @@index([date])
+  @@index([barberId, date])
+}
+
+// Contenido del inicio que se administra desde /admin
+
+model Promotion {
+  id          Int     @id @default(autoincrement())
+  tag         String
+  title       String
+  description String
+  price       Int? // CLP; vacío = sin precio fijo (ej. "-20%")
+  featured    Boolean @default(false)
+  message     String // texto prellenado del WhatsApp
+  active      Boolean @default(true)
+  sortOrder   Int     @default(0)
+}
+
+model Product {
+  id        Int     @id @default(autoincrement())
+  name      String
+  category  String
+  price     Int // CLP
+  imageUrl  String
+  active    Boolean @default(true)
+  sortOrder Int     @default(0)
+}

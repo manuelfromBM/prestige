@@ -35,6 +35,22 @@
 }
 
 /* Marca */
+.brandLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.9rem;
+  text-decoration: none;
+}
+
+.brandLogo {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1.5px solid var(--clr-red-muted);
+  flex-shrink: 0;
+}
+
 .brand {
   font-family: var(--font-display);
   font-size: 2rem;

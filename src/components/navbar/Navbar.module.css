@@ -30,25 +30,43 @@
 .logo {
   display: inline-flex;
   align-items: center;
+  gap: 0.75rem;
   text-decoration: none;
   flex-shrink: 0;
 }
 
+.logoImgWrap {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  border: 1.5px solid var(--clr-red-muted);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  transition: border-color var(--transition), transform var(--transition);
+}
+
+.logo:hover .logoImgWrap {
+  border-color: var(--clr-red);
+  transform: translateY(-2px);
+}
+
 .logoImg {
-  height: 40px;
-  width: auto;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   display: block;
-  object-fit: contain;
 }
 
 .logoText {
   font-family: var(--font-display);
-  font-size: 1.65rem;
+  font-size: 1.5rem;
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--clr-white);
   line-height: 1;
+  white-space: nowrap;
 }
 
 .logoAccent {
@@ -224,7 +242,7 @@
 /* TV */
 @media (min-width: 1920px) {
   .inner { max-width: 1600px; padding: 1.1rem 3rem; }
-  .logoText { font-size: 2rem; }
+  .logoText { font-size: 1.9rem; }
   .link { font-size: 0.95rem; }
   .cta { font-size: 0.9rem; padding: 0.7rem 1.75rem; }
 }

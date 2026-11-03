@@ -16,22 +16,29 @@ import Faq from "@/src/components/sections/faq/Faq";
 import FinalCta from "@/src/components/sections/finalcta/FinalCta";
 import Footer from "@/src/components/sections/footer/Footer";
 import WhatsAppButton from "@/src/components/whatsapbtn/BtnWasap";
+import { connection } from "next/server";
+import { contentService } from "@/src/server/container";
 
-export default function HomePage() {
+export default async function HomePage() {
+  // Se renderiza en cada visita para mostrar al tiro los cambios hechos en /admin
+  // (better-sqlite3 es síncrono: sin connection() la consulta quedaría congelada en el build)
+  await connection();
+  const content = await contentService.getSiteContent();
+
   return (
     <main>
       <Navbar />
       <Hero />
       <Benefits />
-      <Services />
+      <Services services={content.services} />
       <ImageAdvisory />
       <Gallery />
       <Process />
-      <Team />
+      <Team barbers={content.barbers} />
       <Testimonials />
       <Trends />
-      <Promotions />
-      <Products />
+      <Promotions promos={content.promotions} />
+      <Products products={content.products} />
       <About />
       <Location />
       <Faq />

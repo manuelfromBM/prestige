@@ -1,0 +1,205 @@
+// Contenido inicial del sitio (servicios, barberos, promociones y productos).
+// Lo usa prisma/seed.ts. Después se administra desde /admin.
+
+const h = (hours: number, minutes = 0) => hours * 60 + minutes;
+
+// `weight`: qué tan pedido es cada servicio en la simulación de citas
+export const services = [
+  {
+    name: "Degradado",
+    description: "Transición perfecta de corto a largo con técnica de máquina experta.",
+    imageUrl: "https://images.unsplash.com/photo-1570654639102-bdd95efeca7a?w=600&q=80",
+    tag: "Más pedido",
+    durationMin: 45,
+    price: 12000,
+    weight: 24,
+  },
+  {
+    name: "Perfilaciones",
+    description: "Líneas limpias y definidas que enmarcan tu rostro con precisión.",
+    imageUrl: "https://images.unsplash.com/photo-1621605815971-fbc98d665033?w=600&q=80",
+    tag: null,
+    durationMin: 30,
+    price: 7000,
+    weight: 10,
+  },
+  {
+    name: "Diseños",
+    description: "Arte en cabello: patrones, figuras y grabados a medida.",
+    imageUrl: "https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=600&q=80",
+    tag: "Premium",
+    durationMin: 60,
+    price: 15000,
+    weight: 6,
+  },
+  {
+    name: "Cortes",
+    description: "Desde clásico a moderno — el corte que refleja quién eres.",
+    imageUrl: "https://images.unsplash.com/photo-1599351431202-1e0f0137899a?w=600&q=80",
+    tag: null,
+    durationMin: 45,
+    price: 10000,
+    weight: 20,
+  },
+  {
+    name: "Cejas",
+    description: "Perfilado y diseño de cejas para un look definido y armónico.",
+    imageUrl: "https://images.unsplash.com/photo-1570654639102-bdd95efeca7a?w=600&q=80",
+    tag: null,
+    durationMin: 30,
+    price: 5000,
+    weight: 8,
+  },
+  {
+    name: "Barbas",
+    description: "Arreglo, modelado y cuidado de barba con productos de primera.",
+    imageUrl: "https://images.unsplash.com/photo-1570654639102-bdd95efeca7a?w=600&q=80",
+    tag: null,
+    durationMin: 30,
+    price: 8000,
+    weight: 14,
+  },
+  {
+    name: "Asesoría de Imagen",
+    description: "Análisis facial y estilo personalizado para proyectar tu mejor versión.",
+    imageUrl: "https://images.unsplash.com/photo-1534308983496-4fabb1a015ee?w=600&q=80",
+    tag: "Exclusivo",
+    durationMin: 60,
+    price: 20000,
+    weight: 4,
+  },
+  {
+    name: "Depilaciones",
+    description: "Retiro de vello facial con cera o hilo para acabados impecables.",
+    imageUrl: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=600&q=80",
+    tag: null,
+    durationMin: 30,
+    price: 6000,
+    weight: 4,
+  },
+  {
+    name: "Servicio Completo",
+    description: "La experiencia total: corte, barba, perfilado y asesoría en una sola visita.",
+    imageUrl: "https://images.unsplash.com/photo-1561948955-570b270e7c36?w=600&q=80",
+    tag: "Todo incluido",
+    durationMin: 90,
+    price: 30000,
+    weight: 8,
+  },
+];
+
+// `specialties` y `occupancy` solo se usan para simular citas
+export const barbers = [
+  {
+    name: "Matías Rojas",
+    specialties: ["Degradado", "Servicio Completo"],
+    role: "Barbero master · Fades",
+    imageUrl: "https://images.unsplash.com/photo-1622286342621-4bd786c2447c?w=600&q=80",
+    experienceYears: 12,
+    days: [1, 2, 3, 4, 5, 6],
+    hours: [h(10), h(19), h(14), h(15)],
+    occupancy: 0.42,
+  },
+  {
+    name: "Diego Fuentes",
+    specialties: ["Barbas", "Perfilaciones"],
+    role: "Especialista en barba",
+    imageUrl: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=600&q=80",
+    experienceYears: 8,
+    days: [2, 3, 4, 5, 6],
+    hours: [h(11), h(20), h(15), h(16)],
+    occupancy: 0.34,
+  },
+  {
+    name: "Cristóbal Vera",
+    specialties: ["Diseños", "Asesoría de Imagen"],
+    role: "Diseños & asesoría",
+    imageUrl: "https://images.unsplash.com/photo-1618077360395-f3068be8e001?w=600&q=80",
+    experienceYears: 10,
+    days: [1, 2, 3, 4, 5],
+    hours: [h(10), h(18), h(13, 30), h(14, 30)],
+    occupancy: 0.3,
+  },
+  {
+    name: "Ignacio Soto",
+    specialties: ["Cortes"],
+    role: "Cortes clásicos",
+    imageUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80",
+    experienceYears: 6,
+    days: [1, 3, 5, 6],
+    hours: [h(12), h(20), h(16), h(16, 30)],
+    occupancy: 0.28,
+  },
+  {
+    name: "Benjamín Muñoz",
+    specialties: ["Degradado", "Perfilaciones"],
+    role: "Degradados & perfilaciones",
+    imageUrl: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=600&q=80",
+    experienceYears: null,
+    days: [4, 5, 6],
+    hours: [h(10), h(20), h(14), h(15)],
+    occupancy: 0.38,
+  },
+];
+
+export const promotions = [
+  {
+    tag: "Primera visita",
+    title: "-20% en tu primer corte",
+    description: "¿Es tu primera vez con nosotros? Te damos la bienvenida con un descuento especial.",
+    price: null,
+    featured: false,
+    message: "¡Hola! Quiero usar la promo de primera visita.",
+  },
+  {
+    tag: "Combo estrella",
+    title: "Corte + Barba",
+    description: "El combo más pedido a precio especial. Look completo en una sola visita.",
+    price: 15000,
+    featured: true,
+    message: "¡Hola! Quiero el combo Corte + Barba.",
+  },
+  {
+    tag: "Estudiantes",
+    title: "-15% con credencial",
+    description: "Presenta tu credencial de estudiante y aprovecha el descuento todos los días.",
+    price: null,
+    featured: false,
+    message: "¡Hola! Quiero la promo de estudiantes.",
+  },
+  {
+    tag: "Membresía",
+    title: "Plan mensual",
+    description: "Cortes ilimitados al mes por una tarifa fija. Ideal si te cuidas siempre.",
+    price: null,
+    featured: false,
+    message: "¡Hola! Quiero info de la membresía mensual.",
+  },
+];
+
+export const products = [
+  {
+    name: "Pomada mate",
+    category: "Fijación fuerte",
+    price: 9900,
+    imageUrl: "https://images.unsplash.com/photo-1631730359585-38a4935cbec4?w=600&q=80",
+  },
+  {
+    name: "Aceite para barba",
+    category: "Cuidado & brillo",
+    price: 8500,
+    imageUrl: "https://images.unsplash.com/photo-1621607512214-68297480165e?w=600&q=80",
+  },
+  {
+    name: "Shampoo sólido",
+    category: "Limpieza diaria",
+    price: 7200,
+    imageUrl: "https://images.unsplash.com/photo-1585232351009-aa87416fca90?w=600&q=80",
+  },
+  {
+    name: "Bálsamo after-shave",
+    category: "Post afeitado",
+    price: 8900,
+    imageUrl: "https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=600&q=80",
+  },
+];

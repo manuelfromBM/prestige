@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import styles from "./About.module.css";
+import logo from "@/public/logo-prestige-barber-circle.jpg";
 
 const stats = [
   { value: "+10", label: "Años de historia" },
@@ -17,11 +18,11 @@ export default function About() {
         <div className={styles.imageCol}>
           <div className={styles.imageWrapper}>
             <Image
-              src="https://images.unsplash.com/photo-1521490878406-4d4b1e51b2b0?w=800&q=80"
-              alt="Nuestra barbería"
+              src={logo}
+              alt="Logo de Prestige Barber"
               fill
               sizes="(max-width: 900px) 100vw, 50vw"
-              className={styles.image}
+              className={styles.logoImage}
             />
           </div>
         </div>

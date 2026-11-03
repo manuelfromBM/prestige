@@ -1,53 +1,16 @@
 "use client";
 
+import Carousel from "@/src/components/carousel/Carousel";
+import type { SiteContent } from "@/src/server/services/content-service";
 import styles from "./Promotions.module.css";
 
 const WHATSAPP = "https://wa.me/56994872535?text=";
 
-interface Promo {
-  id: number;
-  tag: string;
-  title: string;
-  description: string;
-  price?: string;
-  featured?: boolean;
-  msg: string;
-}
+const clp = new Intl.NumberFormat("es-CL", { style: "currency", currency: "CLP", maximumFractionDigits: 0 });
 
-const promos: Promo[] = [
-  {
-    id: 1,
-    tag: "Primera visita",
-    title: "-20% en tu primer corte",
-    description: "¿Es tu primera vez con nosotros? Te damos la bienvenida con un descuento especial.",
-    msg: "¡Hola! Quiero usar la promo de primera visita.",
-  },
-  {
-    id: 2,
-    tag: "Combo estrella",
-    title: "Corte + Barba",
-    description: "El combo más pedido a precio especial. Look completo en una sola visita.",
-    price: "$15.000",
-    featured: true,
-    msg: "¡Hola! Quiero el combo Corte + Barba.",
-  },
-  {
-    id: 3,
-    tag: "Estudiantes",
-    title: "-15% con credencial",
-    description: "Presenta tu credencial de estudiante y aprovecha el descuento todos los días.",
-    msg: "¡Hola! Quiero la promo de estudiantes.",
-  },
-  {
-    id: 4,
-    tag: "Membresía",
-    title: "Plan mensual",
-    description: "Cortes ilimitados al mes por una tarifa fija. Ideal si te cuidas siempre.",
-    msg: "¡Hola! Quiero info de la membresía mensual.",
-  },
-];
+export default function Promotions({ promos }: { promos: SiteContent["promotions"] }) {
+  if (promos.length === 0) return null;
 
-export default function Promotions() {
   return (
     <section className={styles.section} id="promociones">
       <div className={styles.header}>
@@ -59,16 +22,16 @@ export default function Promotions() {
         </p>
       </div>
 
-      <div className={styles.grid}>
+      <Carousel className={styles.grid} label="Promociones">
         {promos.map((p) => (
           <article key={p.id} className={`${styles.card} ${p.featured ? styles.featured : ""}`}>
             {p.featured && <span className={styles.ribbon}>Más popular</span>}
             <span className={styles.tag}>{p.tag}</span>
             <h3 className={styles.cardTitle}>{p.title}</h3>
-            {p.price && <p className={styles.price}>{p.price}</p>}
+            {p.price !== null && <p className={styles.price}>{clp.format(p.price)}</p>}
             <p className={styles.cardDescription}>{p.description}</p>
             <a
-              href={WHATSAPP + encodeURIComponent(p.msg)}
+              href={WHATSAPP + encodeURIComponent(p.message)}
               target="_blank"
               rel="noopener noreferrer"
               className={styles.cta}
@@ -78,7 +41,7 @@ export default function Promotions() {
             </a>
           </article>
         ))}
-      </div>
+      </Carousel>
     </section>
   );
 }

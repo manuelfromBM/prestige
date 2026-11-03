@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Carousel from "@/src/components/carousel/Carousel";
 import styles from "./Testimonials.module.css";
 
 interface Review {
@@ -79,7 +80,7 @@ export default function Testimonials() {
         </div>
       </div>
 
-      <div className={styles.grid}>
+      <Carousel className={styles.grid} label="Testimonios">
         {reviews.map((r) => (
           <article key={r.id} className={styles.card}>
             <span className={styles.quote}>&ldquo;</span>
@@ -96,7 +97,7 @@ export default function Testimonials() {
             </div>
           </article>
         ))}
-      </div>
+      </Carousel>
     </section>
   );
 }

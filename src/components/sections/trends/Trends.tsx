@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Carousel from "@/src/components/carousel/Carousel";
 import styles from "./Trends.module.css";
 
 interface Trend {
@@ -49,7 +50,7 @@ export default function Trends() {
         </p>
       </div>
 
-      <div className={styles.grid}>
+      <Carousel className={styles.grid} label="Cortes en tendencia">
         {trends.map((t) => (
           <article key={t.id} className={styles.card}>
             <div className={styles.imageWrapper}>
@@ -68,7 +69,7 @@ export default function Trends() {
             </div>
           </article>
         ))}
-      </div>
+      </Carousel>
     </section>
   );
 }

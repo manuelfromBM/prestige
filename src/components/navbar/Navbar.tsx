@@ -1,16 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
 import styles from "./Navbar.module.css";
-
-/* ─────────────────────────────────────────────
-   LOGO: pega aquí la URL de tu logo.
-   Si la dejas vacía (""), se muestra el logo en texto.
-   ───────────────────────────────────────────── */
-const LOGO_URL = "https://placehold.co/160x48/cc1616/f5f5f5?text=LOGO";
-
-const WHATSAPP = "https://wa.me/56994872535?text=" +
-  encodeURIComponent("¡Hola! Quiero reservar una hora.");
+import logo from "@/public/logo-prestige-barber-circle.jpg";
 
 const links = [
   { label: "Inicio", href: "#inicio" },
@@ -46,14 +40,12 @@ export default function Navbar() {
       <div className={styles.inner}>
         {/* Logo */}
         <a href="#inicio" className={styles.logo} onClick={() => setMenuOpen(false)}>
-          {LOGO_URL ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={LOGO_URL} alt="Logo" className={styles.logoImg} />
-          ) : (
-            <span className={styles.logoText}>
-              Barber<span className={styles.logoAccent}>Shop</span>
-            </span>
-          )}
+          <span className={styles.logoImgWrap}>
+            <Image src={logo} alt="" className={styles.logoImg} priority />
+          </span>
+          <span className={styles.logoText}>
+            Prestige <span className={styles.logoAccent}>Barber</span>
+          </span>
         </a>
 
         {/* Links desktop */}
@@ -66,9 +58,9 @@ export default function Navbar() {
         </nav>
 
         {/* CTA desktop */}
-        <a href={WHATSAPP} target="_blank" rel="noopener noreferrer" className={styles.cta}>
+        <Link href="/agendar" className={styles.cta}>
           Reservar
-        </a>
+        </Link>
 
         {/* Botón hamburguesa (móvil) */}
         <button
@@ -97,15 +89,9 @@ export default function Navbar() {
               {l.label}
             </a>
           ))}
-          <a
-            href={WHATSAPP}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.mobileCta}
-            onClick={() => setMenuOpen(false)}
-          >
-            Reservar por WhatsApp
-          </a>
+          <Link href="/agendar" className={styles.mobileCta} onClick={() => setMenuOpen(false)}>
+            Reservar hora
+          </Link>
         </nav>
       </div>
     </header>

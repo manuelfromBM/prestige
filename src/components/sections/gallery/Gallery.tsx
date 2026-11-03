@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Carousel from "@/src/components/carousel/Carousel";
 import styles from "./Gallery.module.css";
 
 interface Work {
@@ -62,7 +63,7 @@ export default function Gallery() {
         </p>
       </div>
 
-      <div className={styles.grid}>
+      <Carousel className={styles.grid} label="Galería de trabajos">
         {works.map((w) => (
           <figure key={w.id} className={styles.card}>
             <div className={styles.beforeLayer}>
@@ -88,7 +89,7 @@ export default function Gallery() {
             <figcaption className={styles.caption}>{w.label}</figcaption>
           </figure>
         ))}
-      </div>
+      </Carousel>
     </section>
   );
 }

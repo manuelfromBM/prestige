@@ -1,0 +1,241 @@
+PRESTIGE BARBER - RESUMEN DE CAMBIOS
+Fecha: 3 de noviembre de 2026
+Nada de esto está commiteado todavía. Revisa con "git status" y "git diff".
+
+======================================================================
+1. ERROR DE TURBOPACK ("FATAL: An unexpected Turbopack error")
+======================================================================
+Causa: caché corrupta en la carpeta .next. El log decía "Next.js package not found"
+cada vez que se recargaba en caliente (HMR).
+Solución: detuve el servidor, borré .next y lo volví a levantar. No cambió código.
+Si vuelve a pasar:
+  - rm -rf .next && npm run dev
+  - Cambiar Node v25 (no es LTS) por Node 22 o 24.
+
+======================================================================
+2. AGENDA ONLINE (/agendar)
+======================================================================
+Página aparte del inicio, con la misma paleta y tipografías del sitio.
+4 pasos: Servicio -> Barbero -> Fecha y hora -> Tus datos -> Confirmación.
+
+Muestra solo lo disponible:
+  - Barberos con al menos una hora libre para el servicio elegido.
+  - Días con horas libres (próximos 14 días).
+  - Horas libres, agrupadas en Mañana / Tarde / Noche.
+  - Descarta horas que ya pasaron, las que empiezan en menos de 30 minutos,
+    las que chocan con la colación y las que terminarían después del cierre.
+Opción "Cualquier barbero": asigna al primero libre a esa hora.
+"Tus próximas reservas": lista de las reservas hechas desde ese navegador,
+con botón para cancelar.
+
+Enlaces cambiados en el inicio:
+  - Botón "Reservar" del menú (escritorio y móvil): ahora va a /agendar (antes WhatsApp).
+  - Botones "Reservar" de cada servicio: abren /agendar?servicio=<id> con el servicio elegido.
+
+5 barberos: Matías Rojas, Diego Fuentes, Cristóbal Vera e Ignacio Soto (los de la
+sección "Nuestro equipo") y uno nuevo, Benjamín Muñoz. Cada uno tiene sus propios
+días de trabajo, horario y colación.
+OJO: la sección "Nuestro equipo" del inicio sigue mostrando solo 4.
+
+======================================================================
+3. CORREO DE CONFIRMACIÓN
+======================================================================
+- Campo "Correo" obligatorio en el paso "Tus datos", con validación.
+- Al confirmar, el servidor envía un correo con servicio, barbero, fecha, hora y duración.
+- Proveedor: Resend (https://resend.com). Sin RESEND_API_KEY el envío se SIMULA
+  (solo se escribe en la consola del servidor) y la confirmación lo indica.
+- La pantalla final dice si el correo se envió, se simuló o falló.
+  Si falla, la reserva igual queda hecha.
+- El envío real con Resend NO está probado (no había cuenta configurada).
+
+Para activarlo, en .env:
+  RESEND_API_KEY=re_xxxxx
+  BOOKING_EMAIL_FROM="Prestige Barber <reservas@tudominio.cl>"
+Mientras no verifiques un dominio, onboarding@resend.dev solo envía al correo de tu cuenta Resend.
+
+======================================================================
+4. BASE DE DATOS SQLITE CON PRISMA
+======================================================================
+Versiones: Prisma 7.10.1 (la estable; la 8 todavía es candidata) con el adapter better-sqlite3.
+Archivo de la base: prisma/dev.db (no se sube a git).
+
+Tablas (prisma/schema.prisma):
+  - Barber        barberos
+  - WorkingHours  horario semanal por barbero (una fila por día que trabaja)
+  - Service       servicios con duración y precio
+  - Appointment   citas. Guarda la fecha (YYYY-MM-DD) y la hora local de la barbería.
+                  Copia el precio y la duración al reservar, para que el historial
+                  no cambie si después modificas el catálogo.
+                  Estado: CONFIRMED / CANCELLED. Origen: WEB (reserva real) / SEED (simulada).
+
+Las reservas de la agenda ahora se guardan en la base de datos (antes vivían solo en el navegador).
+Al confirmar, el servidor vuelve a revisar la disponibilidad dentro de una transacción,
+así dos personas no pueden tomar la misma hora (si pasa, responde 409 y la agenda se refresca).
+
+Datos de ejemplo (prisma/seed.ts): 9 servicios, 5 barberos y unas 3.260 citas simuladas
+(200 días de historial + 14 días hacia adelante), con nombres de clientes ficticios.
+Cada servicio tiene su popularidad y cada barbero su especialidad.
+Los precios y las duraciones los inventé yo: ajústalos en prisma/seed.ts.
+
+Comandos nuevos:
+  npm run db:migrate   aplica o crea migraciones
+  npm run db:seed      BORRA todo y recarga los datos de ejemplo (incluidas las reservas reales)
+  npm run db:reset     borra la base completa y la recrea con el seed
+  npm run db:studio    abre Prisma Studio para ver y editar datos
+  (postinstall ejecuta "prisma generate" automáticamente)
+
+======================================================================
+5. DASHBOARD DE MÉTRICAS (/dashboard)
+======================================================================
+No tiene enlace en el sitio: se entra solo escribiendo la URL. Está marcado "noindex"
+para que Google no lo indexe.
+Protección opcional: si defines DASHBOARD_KEY en .env, se entra con
+  /dashboard?key=<valor>
+y sin la clave responde 404 (como si no existiera). Sin DASHBOARD_KEY queda abierto.
+  -> La protección con clave NO la probé; conviene probarla una vez.
+
+Filtros: período (7 / 30 / 90 días) y barbero (Todos o uno).
+Contenido:
+  - Indicadores: ingresos, citas realizadas, ticket promedio, ocupación, cancelaciones,
+    clientes únicos, cada uno con la variación frente al período anterior.
+  - Citas realizadas por día (barras, con detalle al pasar el mouse).
+  - Servicios más pedidos.
+  - Tabla de rendimiento por barbero: citas, ingresos, ticket, ocupación, cancelación,
+    clientes, servicio top y próximas citas. Clic en un barbero para filtrar.
+  - Ingresos por barbero.
+  - Próximas citas.
+Definiciones:
+  - "Cita realizada" = confirmada y que ya terminó.
+  - "Ocupación" = minutos reservados / minutos de trabajo (sin colación).
+
+======================================================================
+6. ARQUITECTURA (backend aislado, preparado para crecer)
+======================================================================
+src/server/                  backend: no depende de React
+  domain/                    tipos, reglas de agenda, fechas, errores (código puro)
+  repositories/types.ts      interfaces de persistencia (lo único que ven los servicios)
+  repositories/prisma.ts     implementación con Prisma
+  services/                  lógica: reservas, métricas, catálogo, correo
+  container.ts               ÚNICO lugar donde se eligen las implementaciones concretas
+  http.ts                    traduce errores de negocio a códigos HTTP
+src/app/api/                 rutas HTTP delgadas (solo llaman a los servicios)
+src/lib/api-client.ts        el frontend habla con la API solo a través de este archivo
+
+API:
+  GET    /api/catalog
+  GET    /api/availability?serviceId=1
+  POST   /api/appointments            (barberId: null = cualquier barbero)
+  DELETE /api/appointments/:id        (cancela; queda en el historial)
+  GET    /api/metrics?days=30&barberId=2
+
+Para migrar a PostgreSQL: cambiar el provider en schema.prisma, usar @prisma/adapter-pg
+en src/server/db.ts y apuntar DATABASE_URL a la nueva base. Los pasos están en el README.
+Para separar el backend: mover src/server a otro servicio con los mismos endpoints y
+definir NEXT_PUBLIC_API_URL.
+
+======================================================================
+7. ARCHIVOS
+======================================================================
+Nuevos:
+  prisma/schema.prisma, prisma/seed.ts, prisma/migrations/, prisma.config.ts
+  src/server/**             backend completo
+  src/app/api/**            rutas de la API
+  src/app/agendar/page.tsx
+  src/app/dashboard/page.tsx
+  src/components/booking/   Booking.tsx, Booking.module.css
+  src/components/dashboard/ Charts.tsx, Dashboard.module.css
+  src/lib/api-client.ts
+  .env.example              plantilla de variables (sí se sube a git)
+  .env                      DATABASE_URL local (no se sube a git)
+  CAMBIOS.txt               este archivo
+Modificados:
+  src/components/navbar/Navbar.tsx            Reservar -> /agendar
+  src/components/sections/services/Services.tsx (+ .module.css)  Reservar -> /agendar?servicio=id
+  package.json / package-lock.json            dependencias y scripts nuevos
+  .gitignore                                  ignora la base .db y el cliente generado; permite .env.example
+  README.md                                   reemplacé el texto por defecto de Next con la documentación del proyecto
+Ya tenían cambios tuyos antes de empezar (solo toqué la parte del botón Reservar):
+  src/components/navbar/Navbar.tsx y Navbar.module.css, public/logo-prestige-barber-circle.jpg
+
+Eliminado:
+  "prisma init" creó por su cuenta carpetas de guías para asistentes de IA
+  (.agents/, .windsurf/, .claude/skills/, skills-lock.json) descargadas de GitHub.
+  Las borré porque no forman parte del proyecto. .claude/launch.json no se tocó.
+
+Dependencias nuevas:
+  @prisma/client, @prisma/adapter-better-sqlite3, server-only
+  dev: prisma, tsx, dotenv
+
+======================================================================
+8. VERIFICACIÓN
+======================================================================
+OK  TypeScript (tsc) y ESLint sin errores.
+OK  "next build" de producción compila.
+OK  API probada con curl: crear (201), hora repetida (409), correo inválido (400),
+    "cualquier barbero", la hora desaparece de la disponibilidad, cancelar,
+    id inexistente (404), métricas y período inválido (400).
+OK  Capturas del dashboard (escritorio y móvil) y de la agenda.
+PENDIENTE  Recorrer la agenda completa a mano en el navegador.
+PENDIENTE  Envío real de correos con Resend.
+PENDIENTE  Probar DASHBOARD_KEY.
+
+======================================================================
+9. ANTES DE PUBLICAR EL SITIO
+======================================================================
+- Definir DASHBOARD_KEY (si no, el panel y /api/metrics quedan públicos).
+- Agregar límite de reservas o captcha en POST /api/appointments para evitar spam.
+- Cancelar solo pide el id de la reserva (un UUID difícil de adivinar). Para algo más
+  seguro, usar un enlace de cancelación enviado por correo.
+- SQLite sirve para un solo servidor. En hosting serverless (Vercel, etc.) usa PostgreSQL.
+- npm audit reporta avisos en dependencias; revisar con "npm audit".
+
+======================================================================
+10. CARRUSEL DE TARJETAS EN MÓVIL
+======================================================================
+Componente nuevo src/components/carousel/Carousel.tsx (+ .module.css).
+En pantallas de hasta 768px las tarjetas de Beneficios, Servicios, Galería, Equipo,
+Testimonios, Tendencias, Promociones y Productos se deslizan hacia el lado, con puntos
+de navegación abajo. En escritorio se ve la grilla de siempre.
+Se quitó el deslizamiento CSS antiguo de cada sección (solo funcionaba bajo 480–600px y sin indicador).
+
+======================================================================
+11. PANEL DE ADMINISTRACIÓN (/admin)
+======================================================================
+Pestañas: Servicios · Barberos · Promociones · Productos. En cada una se puede:
+agregar, editar, ocultar/mostrar, cambiar el orden (flechas) y eliminar.
+  - Servicios: nombre, precio, duración, etiqueta, descripción, foto.
+  - Barberos: nombre, especialidad, años de experiencia, Instagram, foto y HORARIO SEMANAL
+    (días, horas y colación). El horario define las horas que ofrece la agenda.
+  - Promociones: título, etiqueta, precio opcional, descripción, mensaje de WhatsApp, destacada.
+  - Productos: nombre, categoría, precio, foto.
+Servicios y barberos que ya tienen citas no se pueden eliminar (se perdería el historial):
+el panel ofrece ocultarlos. Ocultos = no aparecen en el inicio ni se pueden reservar,
+pero siguen contando en las métricas.
+Las fotos se cargan pegando un enlace https:// o una ruta de /public (no hay subida de archivos).
+
+El INICIO ahora lee estas 4 secciones desde la base de datos (antes estaban escritas en el código).
+Los cambios se ven al recargar la página. La sección "Nuestro equipo" ahora muestra a los
+5 barberos (incluye a Benjamín Muñoz; puedes ocultarlo desde el panel).
+
+Acceso:
+  - ADMIN_KEY en .env → pide esa clave; la sesión dura 7 días (cookie httpOnly).
+  - Sin ADMIN_KEY: abierto en desarrollo; en producción el panel responde 404.
+
+Base de datos: migración 20261103142414_admin_content (campos nuevos en Service y Barber,
+tablas Promotion y Product). Se aplicó sin borrar nada; rellené los textos/fotos actuales
+del sitio en tu base. prisma/content.ts guarda el contenido inicial que usa el seed.
+
+API nueva (requiere sesión):
+  POST   /api/admin/session            { key }  inicia sesión  (DELETE cierra)
+  GET    /api/admin/content
+  POST   /api/admin/:tipo               crear      (tipo: services | barbers | promotions | products)
+  PUT    /api/admin/:tipo/:id           editar
+  DELETE /api/admin/:tipo/:id           eliminar
+  PATCH  /api/admin/:tipo  { ids }      reordenar
+
+IMPORTANTE: reinicia "npm run dev". El servidor que estaba corriendo guarda en memoria el
+cliente de Prisma anterior a la migración y responde error 500 en el panel hasta reiniciarlo.
+
+Verificado con "next build" + servidor de prueba en el puerto 3100 (con una COPIA de la base):
+login (clave mala/buena), editar precio y verlo en /agendar, validaciones, horario,
+ocultar barbero con citas, reordenar y ocultar productos, reflejo en el inicio, móvil.

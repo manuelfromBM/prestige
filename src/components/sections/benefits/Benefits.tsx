@@ -1,5 +1,6 @@
 "use client";
 
+import Carousel from "@/src/components/carousel/Carousel";
 import styles from "./Benefits.module.css";
 
 interface Benefit {
@@ -90,7 +91,7 @@ export default function Benefits() {
         </p>
       </div>
 
-      <div className={styles.grid}>
+      <Carousel className={styles.grid} label="Beneficios">
         {benefits.map((b) => (
           <article key={b.id} className={styles.card}>
             <div className={styles.iconWrap}>{b.icon}</div>
@@ -98,7 +99,7 @@ export default function Benefits() {
             <p className={styles.cardDescription}>{b.description}</p>
           </article>
         ))}
-      </div>
+      </Carousel>
     </section>
   );
 }
