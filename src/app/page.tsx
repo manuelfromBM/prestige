@@ -21,7 +21,6 @@ import { contentService } from "@/src/server/container";
 
 export default async function HomePage() {
   // Se renderiza en cada visita para mostrar al tiro los cambios hechos en /admin
-  // (better-sqlite3 es síncrono: sin connection() la consulta quedaría congelada en el build)
   await connection();
   const content = await contentService.getSiteContent();
 

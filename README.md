@@ -1,14 +1,14 @@
 # Prestige Barber
 
 Sitio de la barbería con agenda online (`/agendar`) y panel de métricas (`/dashboard`).
-Next.js 16 + Prisma 7 + SQLite.
+Next.js 16 + Prisma 7 + PostgreSQL (Neon).
 
 ## Puesta en marcha
 
 ```bash
 npm install            # también genera el cliente de Prisma
-cp .env.example .env   # ajusta las variables si hace falta
-npm run db:migrate     # crea la base SQLite en prisma/dev.db
+cp .env.example .env   # pon en DATABASE_URL el string de conexión de Neon
+npm run db:migrate     # crea las tablas en la base
 npm run db:seed        # carga barberos, servicios y ~200 días de citas simuladas
 npm run dev
 ```
@@ -57,12 +57,12 @@ prisma/                      esquema, migraciones y seed
 Las fechas de las citas se guardan como `YYYY-MM-DD` + minuto de inicio en horario local de la
 barbería (`SHOP_TIMEZONE`), así no dependen de la zona horaria del servidor.
 
-### Migrar a PostgreSQL
+### Base de datos
 
-1. En `prisma/schema.prisma`, cambia `provider = "sqlite"` por `"postgresql"`.
-2. `npm install @prisma/adapter-pg` y en `src/server/db.ts` usa
-   `new PrismaPg({ connectionString: process.env.DATABASE_URL })`.
-3. Apunta `DATABASE_URL` a tu base, borra `prisma/migrations` y corre `npm run db:migrate`.
+La base es PostgreSQL en [Neon](https://neon.tech), conectada con `@prisma/adapter-pg`
+(`src/server/db.ts`). `DATABASE_URL` puede ser el string con `-pooler` que entrega Neon.
+La reserva de horas corre en una transacción `Serializable`, así dos clientes no pueden tomar
+la misma hora aunque reserven al mismo tiempo.
 
 ### Separar el backend
 

@@ -3,14 +3,14 @@
 // Ejecutar con: npm run db:seed  (borra y vuelve a crear los datos)
 
 import "dotenv/config";
-import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
+import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "../src/generated/prisma/client";
 import { addDays, dateRange, shopNow, weekdayOf } from "../src/server/domain/clock";
 import { BOOKING_WINDOW_DAYS, SLOT_MINUTES } from "../src/server/domain/schedule";
 import { barbers, products, promotions, services } from "./content";
 
 const prisma = new PrismaClient({
-  adapter: new PrismaBetterSqlite3({ url: process.env.DATABASE_URL ?? "file:./prisma/dev.db" }),
+  adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL }),
 });
 
 const firstNames = ["Tomás", "Joaquín", "Vicente", "Martín", "Agustín", "Lucas", "Felipe", "Sebastián", "Nicolás", "Benjamín", "Maximiliano", "Gabriel", "Francisco", "Javier", "Pablo", "Andrés", "Rodrigo", "Camilo", "Bastián", "Alonso"];

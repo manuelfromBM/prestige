@@ -31,8 +31,10 @@
   display: inline-flex;
   width: 56px;
   height: 56px;
+  padding: 3px;
   border-radius: 50%;
   overflow: hidden;
+  background-color: #000;
   border: 2px solid var(--clr-border);
   transition: border-color var(--transition);
 }
@@ -42,7 +44,7 @@
 .logoImg {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .back {

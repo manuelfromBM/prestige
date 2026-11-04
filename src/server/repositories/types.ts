@@ -2,7 +2,7 @@ import type { AllContent, ContentInput, ContentItems, ContentKind } from "../dom
 import type { Appointment, AppointmentStatus, Barber, NewAppointment, Service } from "../domain/types";
 
 // Contratos de persistencia. Los servicios solo conocen estas interfaces,
-// así se puede cambiar Prisma/SQLite por PostgreSQL u otra fuente sin tocar la lógica.
+// así se puede cambiar Prisma/PostgreSQL por otra fuente sin tocar la lógica.
 
 export interface CatalogRepository {
   // includeHidden: también los ocultos desde /admin (para nombres en el historial)

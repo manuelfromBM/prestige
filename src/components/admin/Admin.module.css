@@ -27,8 +27,10 @@
 .logo {
   width: 52px;
   height: 52px;
+  padding: 3px;
   border-radius: 50%;
-  object-fit: cover;
+  object-fit: contain;
+  background-color: #000;
   border: 2px solid var(--clr-border);
 }
 
@@ -766,8 +768,10 @@ textarea.input {
   width: 72px;
   height: 72px;
   margin: 0 auto;
+  padding: 4px;
   border-radius: 50%;
-  object-fit: cover;
+  object-fit: contain;
+  background-color: #000;
   border: 2px solid var(--clr-border);
 }
 

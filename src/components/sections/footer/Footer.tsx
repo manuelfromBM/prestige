@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import styles from "./Footer.module.css";
-import logo from "@/public/logo-prestige-barber-circle.jpg";
+import logo from "@/public/logo-prestige-barber-emblem.jpg";
 
 const WHATSAPP = "https://wa.me/56994872535";
 

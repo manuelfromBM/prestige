@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import styles from "./About.module.css";
-import logo from "@/public/logo-prestige-barber-circle.jpg";
+import logo from "@/public/logo-prestige-barber-emblem.jpg";
 
 const stats = [
   { value: "+10", label: "Años de historia" },

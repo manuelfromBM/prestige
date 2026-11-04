@@ -4,7 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import styles from "./Admin.module.css";
-import logo from "@/public/logo-prestige-barber-circle.jpg";
+import logo from "@/public/logo-prestige-barber-emblem.jpg";
 import { ApiError, api } from "@/src/lib/api-client";
 
 export default function AdminLogin() {

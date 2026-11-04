@@ -4,7 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import styles from "@/src/components/dashboard/Dashboard.module.css";
 import { DailyBars, HBars } from "@/src/components/dashboard/Charts";
-import logo from "@/public/logo-prestige-barber-circle.jpg";
+import logo from "@/public/logo-prestige-barber-emblem.jpg";
 import { isUnoptimized } from "@/src/lib/images";
 import { canViewDashboard, metricsService } from "@/src/server/container";
 import { formatLongDate, formatTime } from "@/src/server/domain/format";

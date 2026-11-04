@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import styles from "./Navbar.module.css";
-import logo from "@/public/logo-prestige-barber-circle.jpg";
+import logo from "@/public/logo-prestige-barber-emblem.jpg";
 
 const links = [
   { label: "Inicio", href: "#inicio" },

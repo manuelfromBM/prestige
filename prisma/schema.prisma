@@ -1,6 +1,4 @@
-// Esquema de la agenda de Prestige Barber.
-// Pensado para ser portable: para migrar a PostgreSQL basta con cambiar el
-// provider, el DATABASE_URL y el adapter en src/server/db.ts.
+// Esquema de la agenda de Prestige Barber (PostgreSQL en Neon).
 
 generator client {
   provider = "prisma-client"
@@ -8,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
 }
 
 model Barber {

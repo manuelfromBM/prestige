@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "reac
 import Image from "next/image";
 import Link from "next/link";
 import styles from "./Booking.module.css";
-import logo from "@/public/logo-prestige-barber-circle.jpg";
+import logo from "@/public/logo-prestige-barber-emblem.jpg";
 import { ApiError, api } from "@/src/lib/api-client";
 import type { EmailStatus } from "@/src/server/domain/types";
 import type { Availability } from "@/src/server/services/booking-service";

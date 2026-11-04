@@ -20,6 +20,12 @@ import type { AppointmentFilter, AppointmentRepository, CatalogRepository, Conte
 
 type Db = PrismaClient | Prisma.TransactionClient;
 
+// Error de serialización de Postgres (40001), venga del cliente (P2034) o del driver adapter
+const isWriteConflict = (err: unknown) => {
+  const e = err as { code?: string; cause?: { kind?: string; originalCode?: string } };
+  return e.code === "P2034" || e.cause?.kind === "TransactionWriteConflict" || e.cause?.originalCode === "40001";
+};
+
 const toSchedule = (rows: WorkingHoursRow[]) =>
   rows
     .map((h) => ({
@@ -141,7 +147,24 @@ export class PrismaAppointmentRepository implements AppointmentRepository {
 
   async transaction<T>(fn: (repo: AppointmentRepository) => Promise<T>): Promise<T> {
     if (!this.root) return fn(this);
-    return this.root.$transaction((tx) => fn(new PrismaAppointmentRepository(tx)));
+    // Serializable: dos reservas simultáneas no pueden tomar la misma hora.
+    // Si Postgres aborta por conflicto se reintenta: la nueva vuelta ve la reserva ganadora
+    // y elige otro barbero o responde CONFLICT.
+    for (let attempt = 1; ; attempt++) {
+      try {
+        return await this.root.$transaction((tx) => fn(new PrismaAppointmentRepository(tx)), {
+          isolationLevel: "Serializable",
+          // Neon está en otra región: margen para la latencia de red
+          maxWait: 10_000,
+          timeout: 15_000,
+        });
+      } catch (err) {
+        if (!isWriteConflict(err)) throw err;
+        if (attempt >= 3) {
+          throw new DomainError("CONFLICT", "Esa hora ya no está disponible. Elige otra, por favor.");
+        }
+      }
+    }
   }
 }
 
